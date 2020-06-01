@@ -18,7 +18,7 @@ will become
 <img alt="Image of Spitfire tool" src="/img/spitfire/spitfire.jpg" loading="lazy" style="aspect-ratio:750/388;">
 ```
 
-html in your markdown, like for example
+Also, html in your markdown, like for example
 
 ```
 <figure>
@@ -38,7 +38,7 @@ will be transformed into
 
 ## Wrapping media
 
-Also, markdown-it-fitmedia carries an adoption of the original [fit-vids](http://fitvidsjs.com) wrapper to make `iframe` and `video` tags responsive. Embedded videos are not automatically responsive or fluid. They come with a fixed setting for width and height. To make them responsive while keeping aspect ratio, they are embedded into a wrapper element. The wrapper receives some clever padding and positioning, and as a last step the fixed dimensions are removed from the video. The technique has been described by Thierry Koblentz in his A List Apart article “[Creating Intrinsic Ratios for Video](https://alistapart.com/article/creating-intrinsic-ratios-for-video/)” in 2009.
+markdown-it-fitmedia carries an adoption of the original [fit-vids](http://fitvidsjs.com) script to make `iframe` and `video` tags responsive. Embedded videos are not automatically responsive or fluid. They come with a fixed setting for width and height. To make them responsive while keeping aspect ratio, they are embedded into a wrapper element. The wrapper receives some clever padding and positioning, and as a last step the fixed dimensions are removed from the video. The technique has been described by Thierry Koblentz in his A List Apart article “[Creating Intrinsic Ratios for Video](https://alistapart.com/article/creating-intrinsic-ratios-for-video/)” in 2009.
 
 For example, this 
 
@@ -76,4 +76,4 @@ markdownIt({
 - `imgDir`, default is `''`: Define the directory where images are stored. The given string will be prepended to the `src` path of the images you are using in your markdown to load and analyze an image for dimension detection. Example use case: I´m using this plugin during buildtime for my 11ty powered blog. There I have a source directory and a destination directory for the created site. The source directory is `/content` and images are stored in `/content/img`. During buildtime the images are getting copied into the destination location, where `/content` will be removed, so that the resulting images can be referenced in the html with `/img/…`. However, markdow-it-fitmedia needs to access the images in the source directory, therefore, in this case, I´m configuring `imgDir: './content'`.
 - `lazyLoad`, default is `true`: When `true`, images will receive the html attribute setting of `loading="lazy"`.
 - `aspectRatio`, default is `true`: When `true`, the CSS property `aspect-ratio` is set on images and wrapped media.
-- `fitWrapElements`, default is `['iframe', 'video']`: Name the html tags that should be wrapped into a responsive wrapper.
+- `fitWrapElements`, default is `['iframe', 'video']`: Name the html tags to be put into a responsive wrapper.
