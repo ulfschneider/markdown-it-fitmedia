@@ -4,7 +4,7 @@ A markdown-it plugin to set aspect-ratio of responsive images, make images lazy 
 
 Responsive images can create cumulative layout shifts (CLS) when loaded, because it´s difficult to get their height correct when their width is flexible. Check "[Setting Height And Width On Images Is Important Again](https://www.smashingmagazine.com/2020/03/setting-height-width-images-important-again/)" to get a comprehensive view about the problem. The CSS property `aspect-ratio` is around the corner and will help solving the CLS problem for responsive images.
 
-The markdown-it-fitmedia plugin is analyzing each of your referenced images, determining its dimensions, and setting the `aspect-ratio` based on the dimensions of the image. By default, the plugin will also add the `loading="lazy"` attribute to your images.
+The markdown-it-fitmedia plugin is analyzing each of your referenced images, determining its dimensions, and setting the `aspect-ratio` based on the dimensions of the image. By default, the plugin will also add the `loading="lazy"` html attribute to your images.
 
 Example:
 
@@ -74,6 +74,6 @@ markdownIt({
 ## Configuration
 
 - `imgDir`, default is `''`: Define the directory where images are stored. The given string will be prepended to the `src` path of the images you are using in your markdown to load and analyze an image for dimension detection. Example use case: I´m using this plugin during buildtime for my 11ty powered blog. There I have a source directory and a destination directory for the created site. The source directory is `/content` and images are stored in `/content/img`. During buildtime the images are getting copied into the destination location, where `/content` will be removed, so that the resulting images can be referenced in the html with `/img/…`. However, markdow-it-fitmedia needs to access the images in the source directory, therefore, in this case, I´m configuring `imgDir: './content'`.
-- `lazyLoad`, default is `true`: When `true`, images will receive the html attribute setting of `loading="lazy"`.
+- `lazyLoad`, default is `true`: When `true`, images will receive the html attribute-setting of `loading="lazy"`.
 - `aspectRatio`, default is `true`: When `true`, the CSS property `aspect-ratio` is set on images and wrapped media.
 - `fitWrapElements`, default is `['iframe', 'video']`: Define the html tags to be put into a responsive wrapper.
