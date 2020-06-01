@@ -66,7 +66,7 @@ markdownIt({
     linkify: true,
     typographer: true,
     })
-    .use(markdown-it-fitmedia, {  //default options
+    .use(markdownItFitMedia, {  //default options
         imgDir: '',
         lazyLoad: true,
         aspectRatio: true,
