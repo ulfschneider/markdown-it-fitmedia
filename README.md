@@ -8,19 +8,19 @@ The markdown-it-fitmedia plugin is analyzing each of your referenced images, det
 
 Example:
 
-```
+```md
 ![Image of Spitfire tool](/img/spitfire/spitfire.jpg)
 ```
 
 will become 
 
-```
+```html
 <img alt="Image of Spitfire tool" src="/img/spitfire/spitfire.jpg" loading="lazy" style="aspect-ratio:750/388;">
 ```
 
 Also, html in your markdown, like for example
 
-```
+```html
 <figure>
 <img alt="" src="/img/spitfire/spitfire.jpg" >
 <figcaption>Image of Spitfire tool</figcaption>
@@ -29,7 +29,7 @@ Also, html in your markdown, like for example
 
 will be transformed into 
 
-```
+```html
 <figure>
 <img alt="" src="/img/spitfire/spitfire.jpg" loading="lazy" style="aspect-ratio:750/388;">
 <figcaption>Image of Spitfire tool</figcaption>
@@ -42,19 +42,19 @@ markdown-it-fitmedia carries an adoption of the original [fit-vids](http://fitvi
 
 For example, this 
 
-```
-<iframe src="https://player.vimeo.com/video/304626830" width="600" height="338" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+```html
+<iframe src="https://player.vimeo.com/video/304626830" width="600" height="338"></iframe>
 ```
 
 will become
 
-```
-<div class="fit-media" style="position:relative; height:0; padding-bottom:56.333333333333336%;aspect-ratio:600/338;"><iframe src="https://player.vimeo.com/video/304626830" frameborder="0" allow="autoplay; fullscreen" allowfullscreen="" style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe></div>
+```html
+<div class="fit-media" style="position:relative; height:0; padding-bottom:56.333333333333336%;aspect-ratio:600/338;"><iframe src="https://player.vimeo.com/video/304626830" style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe></div>
 ```
 
 ## Usage
 
-```
+```js
 var markdownIt = require('markdown-it');
 var markdownItFitMedia = require('markdown-it-fitmedia');
  
