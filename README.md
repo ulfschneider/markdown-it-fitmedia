@@ -54,10 +54,10 @@ will become
 
 ## Usage
 
+```
 var markdownIt = require('markdown-it');
 var markdownItFitMedia = require('markdown-it-fitmedia');
  
-```
 markdownIt({
     html: true,
     linkify: true,
