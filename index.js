@@ -197,7 +197,7 @@ function fitImg(md, fitMediaOptions) {
         const tokens = state.tokens;
 
         tokens
-            .filter(token => token.type == token.type == 'html_inline')
+            .filter(token => token.type == token.type == 'html_block')
             .forEach(token => adjustHtmlImgs(token, fitMediaOptions));
     });
 
