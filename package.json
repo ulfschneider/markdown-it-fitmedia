@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-fitmedia",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "A markdown-it plugin to set aspect-ratio of responsive images and to make videos responsive",
   "main": "index.js",
   "scripts": {

@@ -1,3 +1,4 @@
+
 const cheerio = require('cheerio');
 const sizeOf = require('image-size');
 
@@ -7,6 +8,24 @@ function getDimensions(src, fitMediaOptions) {
     } else {
         return sizeOf(src);
     }
+}
+
+function replaceInlineTag(source, tag, replacement) {
+    if (source && replacement) {
+        if (source && replacement) {
+            let regex = new RegExp(`<${tag}.*>`, 'i');
+            return source.replace(regex, replacement);
+        }
+    }
+    return source;
+}
+
+function replaceBlockTag(source, tag, replacement) {
+    if (source && replacement) {
+        let regex = new RegExp(`<${tag}.*>.*</${tag}>`, 'i');
+        return source.replace(regex, replacement);
+    }
+    return source;
 }
 
 function styleAspectRatio(style, width, height) {
@@ -70,9 +89,9 @@ function fitWrapHtmlElements(token, tagName, fitMediaOptions) {
                     }
                     const fitWrapper = $(`<div class="fit-media" style="${wrapperStyle}"></div>`);
                     $(element).wrap(fitWrapper);
+                    token.content = replaceBlockTag(token.content, tagName, $.html(fitWrapper));
                 }
-            });
-            token.content = $.html();
+            });            
         }
     } catch (err) {
         console.error(`Failure when adjusting element ${err}`);
@@ -88,13 +107,12 @@ function fitWrapElements(token, fitMediaOptions) {
 
 function adjustHtmlImgs(token, fitMediaOptions) {
     try {
-        let $ = cheerio.load(token.content);
 
+        let $ = cheerio.load(token.content);
         let imgs = $('img').filter((idx, img) => !isWrappedInPicture(img));
 
         if (imgs.length) {
             imgs.each(function (i, img) {
-
                 if (fitMediaOptions.lazyLoad) {
                     $(img).attr('loading', 'lazy');
                 }
@@ -112,11 +130,9 @@ function adjustHtmlImgs(token, fitMediaOptions) {
                             $(img).attr('style', style);
                         }
                     }
-
                 }
-
+                token.content = replaceInlineTag(token.content, 'img', $.html(img));
             });
-            token.content = $.html();
         }
     } catch (err) {
         console.error(`Failure when adjusting imgo ${err}`);
@@ -197,12 +213,11 @@ function fitImg(md, fitMediaOptions) {
         const tokens = state.tokens;
 
         tokens
-            .filter(token => token.type == token.type == 'html_block')
+            .filter(token => token.type == 'html_block' || token.type == 'html_inline')
             .forEach(token => adjustHtmlImgs(token, fitMediaOptions));
     });
 
     adjustMarkdownImgs(md, fitMediaOptions);
-
 }
 
 
@@ -219,5 +234,4 @@ fitMedia.defaults = {
     fitWrapElements: ['iframe', 'video']
 }
 
-module.exports = fitMedia;
 
