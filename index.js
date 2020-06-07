@@ -91,7 +91,7 @@ function fitWrapHtmlElements(token, tagName, fitMediaOptions) {
                     $(element).wrap(fitWrapper);
                     token.content = replaceBlockTag(token.content, tagName, $.html(fitWrapper));
                 }
-            });            
+            });
         }
     } catch (err) {
         console.error(`Failure when adjusting element ${err}`);
@@ -234,4 +234,4 @@ fitMedia.defaults = {
     fitWrapElements: ['iframe', 'video']
 }
 
-
+module.exports = fitMedia;
