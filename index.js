@@ -1,4 +1,3 @@
-
 const cheerio = require('cheerio');
 const sizeOf = require('image-size');
 
@@ -20,14 +19,6 @@ function replaceInlineTag(source, tag, replacement) {
     return source;
 }
 
-function replaceBlockTag(source, tag, replacement) {
-    if (source && replacement) {
-        let regex = new RegExp(`<${tag}.*>.*</${tag}>`, 'i');
-        return source.replace(regex, replacement);
-    }
-    return source;
-}
-
 function styleAspectRatio(style, width, height) {
     if (style) {
         if (!/;\s*$/.test(style)) {
@@ -39,7 +30,6 @@ function styleAspectRatio(style, width, height) {
     }
     return style;
 }
-
 
 function hasParentTag(node, tag) {
     let parent = node.parent;
@@ -89,8 +79,8 @@ function fitWrapHtmlElements(token, tagName, fitMediaOptions) {
                     }
                     const fitWrapper = $(`<div class="fit-media" style="${wrapperStyle}"></div>`);
                     $(element).wrap(fitWrapper);
-                    token.content = replaceBlockTag(token.content, tagName, $.html(fitWrapper));
                 }
+                token.content = $.html();
             });
         }
     } catch (err) {
@@ -233,5 +223,6 @@ fitMedia.defaults = {
     aspectRatio: true,
     fitWrapElements: ['iframe', 'video']
 }
+
 
 module.exports = fitMedia;
