@@ -9,10 +9,11 @@ function getDimensions(src, fitMediaOptions) {
     }
 }
 
-function replaceFirstInlineTag(source, tag, replacement) {
+function replaceFirstImgTag(source, src, replacement) {
+
     if (source && replacement) {
         if (source && replacement) {
-            let regex = new RegExp(`<${tag}.*?>`, 'i');
+            let regex = new RegExp(`<img.*?src="${src}".*?>`, 'i');
             return source.replace(regex, replacement);
         }
     }
@@ -103,14 +104,15 @@ function adjustHtmlImgs(token, fitMediaOptions) {
 
         if (imgs.length) {
             imgs.each(function (i, img) {
-                if (fitMediaOptions.lazyLoad) {
-                    $(img).attr('loading', 'lazy');
-                }
 
                 if (fitMediaOptions.aspectRatio) {
 
                     let src = $(img).attr('src');
                     if (src) {
+                        if (fitMediaOptions.lazyLoad) {
+                            $(img).attr('loading', 'lazy');
+                        }
+
                         let dimensions = getDimensions(src, fitMediaOptions);
                         const height = dimensions.height;
                         const width = dimensions.width;
@@ -119,9 +121,10 @@ function adjustHtmlImgs(token, fitMediaOptions) {
                             style = styleAspectRatio(style, width, height);
                             $(img).attr('style', style);
                         }
+                        token.content = replaceFirstImgTag(token.content, src, $.html(img));
                     }
                 }
-                token.content = replaceFirstInlineTag(token.content, 'img', $.html(img));
+
             });
         }
     } catch (err) {
@@ -223,6 +226,5 @@ fitMedia.defaults = {
     aspectRatio: true,
     fitWrapElements: ['iframe', 'video']
 }
-
 
 module.exports = fitMedia;
