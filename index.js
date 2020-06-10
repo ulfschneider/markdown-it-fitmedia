@@ -9,10 +9,10 @@ function getDimensions(src, fitMediaOptions) {
     }
 }
 
-function replaceInlineTag(source, tag, replacement) {
+function replaceFirstInlineTag(source, tag, replacement) {
     if (source && replacement) {
         if (source && replacement) {
-            let regex = new RegExp(`<${tag}.*>`, 'i');
+            let regex = new RegExp(`<${tag}.*?>`, 'i');
             return source.replace(regex, replacement);
         }
     }
@@ -121,7 +121,7 @@ function adjustHtmlImgs(token, fitMediaOptions) {
                         }
                     }
                 }
-                token.content = replaceInlineTag(token.content, 'img', $.html(img));
+                token.content = replaceFirstInlineTag(token.content, 'img', $.html(img));
             });
         }
     } catch (err) {
