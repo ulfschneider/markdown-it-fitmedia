@@ -9,17 +9,6 @@ function getDimensions(src, fitMediaOptions) {
     }
 }
 
-function replaceFirstImgTag(source, src, replacement) {
-
-    if (source && replacement) {
-        if (source && replacement) {
-            let regex = new RegExp(`<img.*?src="${src}".*?>`, 'i');
-            return source.replace(regex, replacement);
-        }
-    }
-    return source;
-}
-
 function styleAspectRatio(style, width, height) {
     if (style) {
         if (!/;\s*$/.test(style)) {
@@ -32,108 +21,126 @@ function styleAspectRatio(style, width, height) {
     return style;
 }
 
-function hasParentTag(node, tag) {
-    let parent = node.parent;
-    if (parent == null) {
-        return false;
-    } else if (parent.name == tag) {
-        return true;
-    } else {
-        return hasParentTag(parent, tag);
-    }
-}
 
-function isWrappedInPicture(node) {
-    return hasParentTag(node, 'picture');
-}
+function wrapHtmlElements(md, fitMediaOptions) {
+    const blockRenderer = md.renderer.rules.html_block;
+    const wrapRenderer = function(tokens, idx, options, env, self) {
+        try {
+            let token = tokens[idx];
+            let $ = cheerio.load(token.content);
+            let elements = $(fitMediaOptions.fitWrapElements.toString());
 
+            if (elements.length) {
+                elements.each(function() {
 
-function fitWrapHtmlElements(token, tagName, fitMediaOptions) {
-    try {
-        let $ = cheerio.load(token.content);
-        let elements = $(tagName);
+                    let width = parseInt($(this).attr('width'));
+                    let height = parseInt($(this).attr('height'));
+                    if (width > 0 && height > 0) {
+                        $(this).removeAttr('height');
+                        $(this).removeAttr('width');
 
-        if (elements.length) {
-            elements.each(function (i, element) {
-
-                let width = parseInt($(element).attr('width'));
-                let height = parseInt($(element).attr('height'));
-                if (width > 0 && height > 0) {
-                    $(element).removeAttr('height');
-                    $(element).removeAttr('width');
-
-                    let style = $(element).attr('style');
-                    if (style) {
-                        if (!/;\s*$/.test(style)) {
-                            style += '; ';
+                        let style = $(this).attr('style');
+                        if (style) {
+                            if (!/;\s*$/.test(style)) {
+                                style += '; ';
+                            }
+                            style += 'position:absolute; top:0; left:0; width:100%; height:100%;';
+                        } else {
+                            style = 'position:absolute; top:0; left:0; width:100%; height:100%;';
                         }
-                        style += 'position:absolute; top:0; left:0; width:100%; height:100%;';
-                    } else {
-                        style = 'position:absolute; top:0; left:0; width:100%; height:100%;';
-                    }
-                    $(element).attr('style', style);
+                        $(this).attr('style', style);
 
-                    const padding = height / width * 100 + '%';
-                    let wrapperStyle = `position:relative; height:0; padding-bottom:${padding};`;
-                    if (fitMediaOptions.aspectRatio) {
-                        wrapperStyle = styleAspectRatio(wrapperStyle, width, height);
+                        const padding = height / width * 100 + '%';
+                        let wrapperStyle = `position:relative; height:0; padding-bottom:${padding};`;
+                        if (fitMediaOptions.aspectRatio) {
+                            wrapperStyle = styleAspectRatio(wrapperStyle, width, height);
+                        }
+                        const fitWrapper = $(`<div class="fit-media" style="${wrapperStyle}"></div>`);
+                        $(this).wrap(fitWrapper);
                     }
-                    const fitWrapper = $(`<div class="fit-media" style="${wrapperStyle}"></div>`);
-                    $(element).wrap(fitWrapper);
-                }
-                token.content = $.html();
-            });
+                });
+                return $('body').html();
+            }
+        } catch (err) {
+            console.error(`Failure when fit-wrapping element ${err}`);
         }
-    } catch (err) {
-        console.error(`Failure when adjusting element ${err}`);
     }
+
+
+    md.renderer.rules.html_block = function(tokens, idx, options, env, self) {
+        let html = wrapRenderer(tokens, idx, options, env, self);
+        if (html) {
+            return html;
+        } else {
+            return blockRenderer(tokens, idx, options, env, self);
+        }
+    }
+
 }
 
-function fitWrapElements(token, fitMediaOptions) {
-    for (let element of fitMediaOptions.fitWrapElements) {
-        fitWrapHtmlElements(token, element, fitMediaOptions);
-    }
-}
 
+function adjustHtmlImgs(md, fitMediaOptions) {
 
-function adjustHtmlImgs(token, fitMediaOptions) {
-    try {
+    const inlineRenderer = md.renderer.rules.html_inline;
+    const blockRenderer = md.renderer.rules.html_block;
+    const imgRenderer = function(tokens, idx, options, env, self) {
+        try {
+            let token = tokens[idx];
+            let img = false;
+            let $ = cheerio.load(token.content);
 
-        let $ = cheerio.load(token.content);
-        let imgs = $('img').filter((idx, img) => !isWrappedInPicture(img));
+            $('img').each(function() {
+                img = true;
 
-        if (imgs.length) {
-            imgs.each(function (i, img) {
-
+                if (fitMediaOptions.lazyLoad) {
+                    $(this).attr('loading', 'lazy');
+                }
                 if (fitMediaOptions.aspectRatio) {
-
-                    let src = $(img).attr('src');
+                    let src = $(this).attr('src');
                     if (src) {
-                        if (fitMediaOptions.lazyLoad) {
-                            $(img).attr('loading', 'lazy');
-                        }
-
                         let dimensions = getDimensions(src, fitMediaOptions);
                         const height = dimensions.height;
                         const width = dimensions.width;
                         if (height > 0 && width > 0) {
-                            let style = $(img).attr('style');
+                            let style = $(this).attr('style');
                             style = styleAspectRatio(style, width, height);
-                            $(img).attr('style', style);
+                            $(this).attr('style', style);
                         }
-                        token.content = replaceFirstImgTag(token.content, src, $.html(img));
                     }
                 }
 
             });
+
+            if (img) {
+                return $('body').html();
+            }
+        } catch (err) {
+            console.error(`Failure when adjusting img ${err}`);
         }
-    } catch (err) {
-        console.error(`Failure when adjusting imgo ${err}`);
     }
+
+    md.renderer.rules.html_inline = function(tokens, idx, options, env, self) {
+        let html = imgRenderer(tokens, idx, options, env, self);
+        if (html) {
+            return html;
+        } else {
+            return inlineRenderer(tokens, idx, options, env, self);
+        }
+    }
+    md.renderer.rules.html_block = function(tokens, idx, options, env, self) {
+        let html = imgRenderer(tokens, idx, options, env, self);
+        if (html) {
+            return html;
+        } else {
+            return blockRenderer(tokens, idx, options, env, self);
+        }
+    }
+
 }
 
+
 function adjustMarkdownImgs(md, fitMediaOptions) {
-    const attr = function (token, key, value) {
+    const attr = function(token, key, value) {
         const idx = token.attrIndex(key);
         if (value == undefined) {
             //returning value            
@@ -155,7 +162,7 @@ function adjustMarkdownImgs(md, fitMediaOptions) {
     }
 
     let defaultRender = md.renderer.rules.image;
-    md.renderer.rules.image = function (tokens, idx, options, env, self) {
+    md.renderer.rules.image = function(tokens, idx, options, env, self) {
 
         let img = tokens[idx];
 
@@ -188,33 +195,17 @@ function adjustMarkdownImgs(md, fitMediaOptions) {
 
 
 function fitWrap(md, fitMediaOptions) {
-
-    md.core.ruler.push('fit-wrap', state => {
-
-        const tokens = state.tokens;
-
-        tokens
-            .filter(token => token.type == 'html_block')
-            .forEach(token => fitWrapElements(token, fitMediaOptions));
-    });
+    wrapHtmlElements(md, fitMediaOptions);
 }
 
 function fitImg(md, fitMediaOptions) {
-
-    md.core.ruler.push('fit-img', state => {
-
-        const tokens = state.tokens;
-
-        tokens
-            .filter(token => token.type == 'html_block' || token.type == 'html_inline')
-            .forEach(token => adjustHtmlImgs(token, fitMediaOptions));
-    });
-
+    adjustHtmlImgs(md, fitMediaOptions);
     adjustMarkdownImgs(md, fitMediaOptions);
 }
 
 
-const fitMedia = function (md, fitMediaOptions) {
+const fitMedia = function(md, fitMediaOptions) {
+
     fitMediaOptions = Object.assign({}, fitMedia.defaults, fitMediaOptions);
     fitImg(md, fitMediaOptions);
     fitWrap(md, fitMediaOptions);
