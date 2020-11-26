@@ -10,7 +10,7 @@ function getDimensions(src, fitMediaOptions) {
 }
 
 function styleAspectRatio(style, width, height) {
-    if (style) {
+    if (style && !/aspect-ratio/i.test(style)) {
         if (!/;\s*$/.test(style)) {
             style += '; ';
         }
