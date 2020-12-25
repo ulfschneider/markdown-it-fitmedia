@@ -86,32 +86,28 @@ function adjustHtmlImgs(md, fitMediaOptions) {
     const imgRenderer = function(tokens, idx, options, env, self) {
         try {
             let token = tokens[idx];
-            let img = false;
             let $ = cheerio.load(token.content);
-
-            $('img').each(function() {
-                img = true;
-
-                if (fitMediaOptions.lazyLoad) {
-                    $(this).attr('loading', 'lazy');
-                }
-                if (fitMediaOptions.aspectRatio) {
-                    let src = $(this).attr('src');
-                    if (src) {
-                        let dimensions = getDimensions(src, fitMediaOptions);
-                        const height = dimensions.height;
-                        const width = dimensions.width;
-                        if (height > 0 && width > 0) {
-                            let style = $(this).attr('style');
-                            style = styleAspectRatio(style, width, height);
-                            $(this).attr('style', style);
+            let imgs = $('img');
+            if (imgs.length) {
+                imgs.each(function() {
+                    if (fitMediaOptions.lazyLoad) {
+                        $(this).attr('loading', 'lazy');
+                    }
+                    if (fitMediaOptions.aspectRatio) {
+                        let src = $(this).attr('src');
+                        if (src) {
+                            let dimensions = getDimensions(src, fitMediaOptions);
+                            const height = dimensions.height;
+                            const width = dimensions.width;
+                            if (height > 0 && width > 0) {
+                                let style = $(this).attr('style');
+                                style = styleAspectRatio(style, width, height);
+                                $(this).attr('style', style);
+                            }
                         }
                     }
-                }
 
-            });
-
-            if (img) {
+                });
                 return $('body').html();
             }
         } catch (err) {
