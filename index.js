@@ -30,7 +30,7 @@ function wrapHtmlElements(md, fitMediaOptions) {
             let $ = cheerio.load(token.content);
             let elements = $(fitMediaOptions.fitWrapElements.toString());
 
-            if (elements.length) {
+            if (elements) {
                 elements.each(function() {
 
                     let width = parseInt($(this).attr('width'));
