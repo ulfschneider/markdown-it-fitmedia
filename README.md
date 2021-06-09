@@ -4,7 +4,7 @@ A markdown-it plugin to set aspect-ratio of responsive images, make images lazy 
 
 Responsive images can create cumulative layout shifts (CLS) when loaded, because it´s difficult to get their height correct when their width is flexible. Check "[Setting Height And Width On Images Is Important Again](https://www.smashingmagazine.com/2020/03/setting-height-width-images-important-again/)" to get a comprehensive view about the problem. The CSS property `aspect-ratio` is around the corner and will help solving the CLS problem for responsive images.
 
-The markdown-it-fitmedia plugin makes use of `aspect-ratio`by  analyzing each of your referenced images, determining its dimensions, and setting the `aspect-ratio` based on the dimensions of the image. By default, the plugin will also add the `loading="lazy"` html attribute to your images.
+The markdown-it-fitmedia plugin makes use of `aspect-ratio` by  analyzing each of your referenced images, determining its dimensions, and setting the `aspect-ratio` based on the dimensions of the image. By default, the plugin will also add the `loading="lazy"` html attribute to your images.
 
 Example:
 

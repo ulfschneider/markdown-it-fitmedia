@@ -3,9 +3,9 @@ const sizeOf = require('image-size');
 
 function getDimensions(src, fitMediaOptions) {
     if (fitMediaOptions.imgDir) {
-        return sizeOf(`${fitMediaOptions.imgDir}${decodeURIComponent(src)}`);
+        return sizeOf(`${fitMediaOptions.imgDir}${src}`);
     } else {
-        return sizeOf(decodeURIComponent(src));
+        return sizeOf(src);
     }
 }
 
