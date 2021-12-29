@@ -15,7 +15,7 @@ Example:
 will become 
 
 ```html
-<img alt="Image of Spitfire tool" src="/img/spitfire/spitfire.jpg" loading="lazy" style="aspect-ratio:750/388;">
+<img alt="Image of Spitfire tool" src="/img/spitfire/spitfire.jpg" loading="lazy" style="aspect-ratio:750/388;" width="750" height="388">
 ```
 
 Also, html in your markdown, like for example
@@ -31,7 +31,7 @@ will be transformed into
 
 ```html
 <figure>
-<img alt="" src="/img/spitfire/spitfire.jpg" loading="lazy" style="aspect-ratio:750/388;">
+<img alt="" src="/img/spitfire/spitfire.jpg" loading="lazy" style="aspect-ratio:750/388;" width="750" height="388">
 <figcaption>Image of Spitfire tool</figcaption>
 </figure>
 ```

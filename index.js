@@ -103,6 +103,8 @@ function adjustHtmlImgs(md, fitMediaOptions) {
                                 let style = $(this).attr('style');
                                 style = styleAspectRatio(style, width, height);
                                 $(this).attr('style', style);
+                                $(this).attr('width', width);
+                                $(this).attr('height', height);
                             }
                         }
                     }
@@ -177,6 +179,8 @@ function adjustMarkdownImgs(md, fitMediaOptions) {
                         let style = attr(img, 'style');
                         style = styleAspectRatio(style, width, height);
                         attr(img, 'style', style);
+                        attr(imt, 'width', width);
+                        attr(img, 'height', height);
                     }
                 }
             } catch (err) {
