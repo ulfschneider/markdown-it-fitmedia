@@ -179,7 +179,7 @@ function adjustMarkdownImgs(md, fitMediaOptions) {
                         let style = attr(img, 'style');
                         style = styleAspectRatio(style, width, height);
                         attr(img, 'style', style);
-                        attr(imt, 'width', width);
+                        attr(img, 'width', width);
                         attr(img, 'height', height);
                     }
                 }
