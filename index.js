@@ -93,16 +93,18 @@ function adjustHtmlImgs(md, fitMediaOptions) {
                     if (fitMediaOptions.lazyLoad) {
                         $(this).attr('loading', 'lazy');
                     }
-                    if (fitMediaOptions.aspectRatio) {
-                        let src = $(this).attr('src');
-                        if (src) {
-                            let dimensions = getDimensions(src, fitMediaOptions);
-                            const height = dimensions.height;
-                            const width = dimensions.width;
-                            if (height > 0 && width > 0) {
+                    let src = $(this).attr('src');
+                    if (src) {
+                        let dimensions = getDimensions(src, fitMediaOptions);
+                        const height = dimensions.height;
+                        const width = dimensions.width;
+                        if (height > 0 && width > 0) {
+                            if (fitMediaOptions.aspectRatio) {
                                 let style = $(this).attr('style');
                                 style = styleAspectRatio(style, width, height);
                                 $(this).attr('style', style);
+                            }
+                            if (fitMediaOptions.imgSizeHint) {
                                 $(this).attr('width', width);
                                 $(this).attr('height', height);
                             }
@@ -162,30 +164,33 @@ function adjustMarkdownImgs(md, fitMediaOptions) {
     let defaultRender = md.renderer.rules.image;
     md.renderer.rules.image = function(tokens, idx, options, env, self) {
 
-        let img = tokens[idx];
+        try {
+            let img = tokens[idx];
 
-        if (fitMediaOptions.lazyLoad) {
-            attr(img, 'loading', 'lazy');
-        }
+            if (fitMediaOptions.lazyLoad) {
+                attr(img, 'loading', 'lazy');
+            }
 
-        if (fitMediaOptions.aspectRatio) {
-            try {
-                src = attr(img, 'src');
-                if (src) {
-                    let dimensions = getDimensions(src, fitMediaOptions);
-                    const height = dimensions.height;
-                    const width = dimensions.width;
-                    if (height > 0 && width > 0) {
+            let src = attr(img, 'src');
+            if (src) {
+                let dimensions = getDimensions(src, fitMediaOptions);
+                const height = dimensions.height;
+                const width = dimensions.width;
+                if (height > 0 && width > 0) {
+                    if (fitMediaOptions.aspectRatio) {
                         let style = attr(img, 'style');
                         style = styleAspectRatio(style, width, height);
                         attr(img, 'style', style);
+                    }
+                    if (fitMediaOptions.imgSizeHint) {
                         attr(img, 'width', width);
                         attr(img, 'height', height);
                     }
                 }
-            } catch (err) {
-                console.error(`Failure when adjusting img ${err}`);
             }
+
+        } catch (err) {
+            console.error(`Failure when adjusting img ${err}`);
         }
 
         // pass token to default renderer.
@@ -215,6 +220,7 @@ fitMedia.defaults = {
     imgDir: '',
     lazyLoad: true,
     aspectRatio: true,
+    imgSizeHint: true,
     fitWrapElements: ['iframe', 'video']
 }
 
