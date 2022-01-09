@@ -62,9 +62,7 @@ var markdownIt = require('markdown-it');
 var markdownItFitMedia = require('markdown-it-fitmedia');
  
 markdownIt({
-    html: true,
-    linkify: true,
-    typographer: true,
+    html: true
     })
     .use(markdownItFitMedia, {  //default options
         imgDir: '',
