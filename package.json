@@ -8,8 +8,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "markdown-it-fitmedia"
+        "url": "git+https://github.com/ulfschneider/markdown-it-fitmedia.git"
     },
+    "bugs": {
+        "url": "https://github.com/ulfschneider/markdown-it-fitmedia/issues"
+    },
+    "homepage": "https://ulf.codes",
     "keywords": [
         "markdown",
         "markdown-it",
@@ -17,8 +21,8 @@
         "aspect-ratio",
         "fit-vids",
         "responsive",
-        "lazy",
-        "11ty"
+        "image",
+        "lazy"
     ],
     "author": "Ulf Schneider",
     "license": "MIT",
