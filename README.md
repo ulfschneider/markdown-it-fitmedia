@@ -67,7 +67,7 @@ markdownIt({
     .use(markdownItFitMedia, {  //default options
         imgDir: '',
         lazyLoad: true,
-        decoding: 'async',
+        decoding: 'auto',
         aspectRatio: true,
         imgSizeHint: true,
         fitWrapElements: ['iframe', 'video']
