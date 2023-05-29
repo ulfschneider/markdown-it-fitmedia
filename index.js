@@ -227,7 +227,7 @@ fitMedia.defaults = {
   lazyLoad: true,
   aspectRatio: true,
   imgSizeHint: true,
-  decoding: 'async',
+  decoding: 'auto',
   fitWrapElements: ['iframe', 'video']
 }
 
