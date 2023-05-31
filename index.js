@@ -93,7 +93,7 @@ function adjustHtmlImgs(md, fitMediaOptions) {
           if (fitMediaOptions.lazyLoad) {
             $(this).attr('loading', 'lazy');
           }
-          if (fitMediaOptions.decoding) {
+          if (fitMediaOptions.decoding && fitMediaOptions.decoding != 'auto') {
             $(this).attr('decoding', fitMediaOptions.decoding);
           }
           let src = $(this).attr('src');
@@ -173,7 +173,7 @@ function adjustMarkdownImgs(md, fitMediaOptions) {
       if (fitMediaOptions.lazyLoad) {
         attr(img, 'loading', 'lazy');
       }
-      if (fitMediaOptions.decoding) {
+      if (fitMediaOptions.decoding && fitMediaOptions.decoding != 'auto') {
         attr(img, 'decoding', fitMediaOptions.decoding);
       }
 
