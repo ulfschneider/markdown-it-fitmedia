@@ -1,4 +1,4 @@
-A markdown-it plugin to set aspect-ratio of responsive images, make images lazy loading, and to make videos responsive. The original idea goes back to [fit-vids](http://fitvidsjs.com) and the [evolutionary improvements](https://daverupert.com/2023/10/fitvids-has-a-web-component-now/) that were possible because browsers improved.
+A markdown-it plugin to set aspect-ratio of responsive images, make images lazy loading, and to make videos responsive. The original idea goes back to [FitVids.js](http://fitvidsjs.com) and the [evolutionary improvements](https://daverupert.com/2023/10/fitvids-has-a-web-component-now/) that were possible because browsers improved.
 
 ## Images
 
