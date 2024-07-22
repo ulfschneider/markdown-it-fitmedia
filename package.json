@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-fitmedia",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A markdown-it plugin to set aspect-ratio of responsive images, videos, and iframes",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/ulfschneider/markdown-it-fitmedia/issues"
   },
-  "homepage": "https://ulf.codes",
+  "homepage": "https://ulfschneider.io",
   "keywords": [
     "markdown",
     "markdown-it",
