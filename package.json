@@ -1,7 +1,7 @@
 {
   "name": "markdown-it-fitmedia",
-  "version": "0.7.3",
-  "description": "A markdown-it plugin to set aspect-ratio of responsive images and to make videos responsive",
+  "version": "1.0.0",
+  "description": "A markdown-it plugin to set aspect-ratio of responsive images, videos, and iframes",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,7 +27,7 @@
   "author": "Ulf Schneider",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.10",
-    "image-size": "^1.0.2"
+    "cheerio": "^1.0.0-rc.12",
+    "image-size": "^1.1.1"
   }
 }
